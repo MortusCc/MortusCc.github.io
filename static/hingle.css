@@ -42,7 +42,7 @@ body:before{
     z-index: -1;
     display: block;
     position: fixed;
-    background: center/cover no-repeat;
+    background: right bottom/contain no-repeat;
 }
 
 ::-webkit-scrollbar{

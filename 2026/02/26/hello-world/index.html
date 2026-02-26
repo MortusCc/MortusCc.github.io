@@ -18,9 +18,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <meta property="og:site_name" content="MortusCc">
     <meta property="og:title" content="Hello World"/>
-    
-    <style>body:before{ content: ''; background-image: url(https://api.paugram.com/wallpaper?source=gh) }</style>
-    
+    <script>
+        var backgrounds = [
+            "/static/img/bg1.jpg",
+            "/static/img/bg2.jpg",
+            "/static/img/bg3.png",
+            "/static/img/bg4.png",
+            "/static/img/bg5.png"
+        ];
+        var randomBg = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+        document.write('<style>body:before{ content: ""; background-image: url(' + randomBg + '); }</style>');
+    </script>
 <meta name="generator" content="Hexo 8.1.1"></head>
 
   <body>
