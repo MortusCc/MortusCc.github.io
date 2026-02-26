@@ -560,7 +560,140 @@ article h3:before{
 
 article h1:before{ font-weight: bold }
 
-/* Hexo Removed */
+article pre code{
+    color: #ccc;
+    display: block;
+    padding: 1em;
+    overflow-x: auto;
+    margin-bottom: 1.5em;
+    background: #1e1e1e; /* VSCode Dark Background */
+    border-radius: .25em;
+    border-radius: var(--radius);
+    font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
+}
+
+article pre code::-webkit-scrollbar{
+    height: 6px;
+    background-color: #1e1e1e;
+}
+
+article pre code::-webkit-scrollbar-thumb{
+    background-color: #444;
+}
+
+/* 覆盖 highlight.js 默认样式以匹配 VSCode */
+.hljs {
+    background: #1e1e1e !important;
+    color: #d4d4d4 !important;
+}
+
+/* Hexo 代码块容器重置 */
+figure.highlight {
+    margin: 1.5em 0;
+    overflow-x: auto;
+    background: #1e1e1e;
+    border-radius: 6px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+/* 移除所有可能干扰的表格样式 */
+figure.highlight table, 
+figure.highlight tr, 
+figure.highlight td {
+    border: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: auto !important;
+    background: transparent !important;
+    border-collapse: collapse !important;
+    border-spacing: 0 !important;
+}
+
+/* 移除可能的条纹背景 */
+figure.highlight tr:nth-child(even),
+figure.highlight tr:nth-child(odd),
+figure.highlight tr:hover {
+    background: transparent !important;
+}
+
+/* 代码区域 */
+figure.highlight .code {
+    padding: 10px 15px !important;
+    width: 100% !important;
+    vertical-align: top;
+    border: none !important;
+}
+
+figure.highlight .code pre {
+    margin: 0;
+    padding: 0;
+    background: transparent;
+    border: none;
+    font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
+    font-size: 14px;
+    line-height: 1.5; /* 确保行高一致 */
+    color: #d4d4d4;
+    white-space: pre;
+}
+
+/* 行号区域 */
+figure.highlight .gutter {
+    padding: 10px !important;
+    vertical-align: top;
+    background-color: #1e1e1e !important;
+    border-right: 1px solid #404040 !important;
+    text-align: right;
+    user-select: none;
+    width: auto !important;
+    border: none !important;
+    border-right: 1px solid #404040 !important;
+}
+
+figure.highlight .gutter pre {
+    margin: 0;
+    padding: 0;
+    background: transparent;
+    border: none;
+    font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
+    font-size: 14px;
+    line-height: 1.5; /* 确保行高一致 */
+    color: #858585;
+}
+
+/* 滚动条样式 */
+figure.highlight::-webkit-scrollbar {
+    height: 8px;
+    background-color: #1e1e1e;
+}
+
+figure.highlight::-webkit-scrollbar-thumb {
+    background-color: #424242;
+    border-radius: 4px;
+}
+
+figure.highlight::-webkit-scrollbar-thumb:hover {
+    background-color: #4f4f4f;
+}
+
+/* 覆盖行号样式 (highlight.js 纯代码模式) */
+.hljs-ln-numbers {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    text-align: center;
+    color: #858585;
+    border-right: 1px solid #444;
+    vertical-align: top;
+    padding-right: 10px !important;
+    padding-left: 10px !important;
+}
+
+.hljs-ln-code {
+    padding-left: 15px !important;
+}
 
 /* - 阅读页其他文章 */
 .post-near{
