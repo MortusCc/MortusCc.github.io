@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    
+    <meta charset="UTF-8">
+    <meta name="referrer" content="no-referrer" />
+    <title>三个实验，三段进化：从裸奔代码到软件构造的工程化思维 - MortusCc</title>
+    
+    <link rel="shortcut icon" href="https://github.com/MortusCc.png">
+    <link rel="icon" href="https://github.com/MortusCc.png" sizes="192x192"/>
+    
+    
+<link rel="stylesheet" href="/static/kico.css">
+<link rel="stylesheet" href="/static/hingle.css">
+
+    
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/vs2015.min.css">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta property="og:site_name" content="MortusCc">
+    <meta property="og:title" content="三个实验，三段进化：从裸奔代码到软件构造的工程化思维"/>
+    <script>
+        var backgrounds = [
+            "/static/img/bg1.jpg",
+            "/static/img/bg2.jpg",
+            "/static/img/bg3.png",
+            "/static/img/bg4.png",
+            "/static/img/bg5.png"
+        ];
+        var randomBg = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+        document.write('<style>body:before{ content: ""; background-image: url(' + randomBg + '); }</style>');
+    </script>
+<meta name="generator" content="Hexo 8.1.1"></head>
+
+  <body>
+    <header>
+    <div class="head-title">
+        <h4>MortusCc</h4>
+    </div>
+    <div class="head-action">
+        <div class="toggle-btn"></div>
+        <div class="light-btn"></div>
+        <div class="search-btn"></div>
+    </div>
+    <form class="head-search" method="post">
+        <input type="text" name="s" placeholder="搜索什么？">
+    </form>
+    <nav class="head-menu">
+        <a href="/">首页</a>
+        <div class="has-child">
+            <a href>分类</a>
+            <div class="sub-menu">
+                <a class="category-link" href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a>
+            </div>
+        </div>
+        
+            <a href="/about">关于我</a>
+        
+            <a href="/friends">朋友们</a>
+        
+    </nav>
+</header>
+
+    <main>
+    <div class="wrap min">
+        <section class="post-title">
+            <h2>三个实验，三段进化：从裸奔代码到软件构造的工程化思维</h2>
+            <div class="post-meta">
+                <time class="date">2026.05.12</time>
+            
+                <span class="category"><a class="category-link" href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a></span>
+            
+            </div>
+        </section>
+        <article class="post-content">
+        
+            <h1 id="三个实验，三段进化：从裸奔代码到软件构造的工程化思维"><a href="#三个实验，三段进化：从裸奔代码到软件构造的工程化思维" class="headerlink" title="三个实验，三段进化：从裸奔代码到软件构造的工程化思维"></a>三个实验，三段进化：从裸奔代码到软件构造的工程化思维</h1><h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p>学期初，我拿到一个 FastAPI 后端项目。它能跑，但浑身是病。</p>
+<p>学期末，它活了——有测试安全网、有抽象分层、有策略调度。</p>
+<p>这不是魔法。这是三个实验教会我的事。</p>
+<hr>
+<h2 id="实验一：让项目”活”过来"><a href="#实验一：让项目”活”过来" class="headerlink" title="实验一：让项目”活”过来"></a>实验一：让项目”活”过来</h2><h3 id="依赖地狱与-Poetry-救赎"><a href="#依赖地狱与-Poetry-救赎" class="headerlink" title="依赖地狱与 Poetry 救赎"></a>依赖地狱与 Poetry 救赎</h3><p>项目最初的依赖管理方式是 <code>requirements.txt</code>。你猜怎么着——它缺包。</p>
+<p>缺到 <code>python run.py</code> 根本起不来。<code>ModuleNotFoundError</code> 一个接一个，像打地鼠。</p>
+<p>这就是传统 <code>requirements.txt</code> 的痛点：没有版本锁定、不区分开发依赖和生产依赖、手工维护容易遗漏。</p>
+<p>Poetry 解决了这一切：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">poetry install          <span class="hljs-comment"># 一键还原可复现环境</span><br>poetry run python run.py  <span class="hljs-comment"># 所有命令统一入口</span><br>poetry run pytest -v       <span class="hljs-comment"># 跑测试也用它</span><br></code></pre></td></tr></table></figure>
+
+<p><code>pyproject.toml</code> + <code>poetry.lock</code> &#x3D; 环境可复现。任何人拿到项目，两条命令就能跑起来。</p>
+<h3 id="写测试前，先看懂代码"><a href="#写测试前，先看懂代码" class="headerlink" title="写测试前，先看懂代码"></a>写测试前，先看懂代码</h3><p>实验要求为 <code>app/utils/</code> 下的工具函数写单元测试。我在 AI 的帮助下，555 个测试用例全部通过，<code>app/utils</code> 覆盖率达到 100%。</p>
+<p>但关键不是数字，是策略：</p>
+<table>
+<thead>
+<tr>
+<th>策略</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Happy Path</td>
+<td>正常输入得预期输出</td>
+</tr>
+<tr>
+<td>Unhappy Path</td>
+<td>空输入、越界、异常输入</td>
+</tr>
+<tr>
+<td>分支覆盖</td>
+<td>if&#x2F;else、异常捕获、early-return 逐条覆盖</td>
+</tr>
+<tr>
+<td>依赖隔离</td>
+<td>用 Mock&#x2F;Monkeypatch 去掉 DB、网络、文件系统</td>
+</tr>
+</tbody></table>
+<h3 id="测试反哺代码——我修了三个真问题"><a href="#测试反哺代码——我修了三个真问题" class="headerlink" title="测试反哺代码——我修了三个真问题"></a>测试反哺代码——我修了三个真问题</h3><p>写测试不是为了交作业，它真的能反哺代码质量。我在补齐覆盖率的过程中发现了三个真实问题：</p>
+<ol>
+<li><strong>资源泄漏</strong>：<code>analyze_image_with_model</code> 在早返回路径下数据库会话未关闭。修法——用 <code>finally</code> 兜底。</li>
+<li><strong>不可测试代码</strong>：图片分析结果注入逻辑嵌在长流程里无法单测。修法——抽取纯函数 <code>_inject_image_analyses_into_markdown</code>。</li>
+<li><strong>测试依赖网络</strong>：远程 MinerU 解析路径默认优先，本地测试根本覆盖不到。修法——新增 <code>MINERU_REMOTE_ENABLED</code> 环境变量开关。</li>
+</ol>
+<p>教训：不可测试的代码，往往也是设计有问题的代码。</p>
+<h3 id="代码坏味道第一课"><a href="#代码坏味道第一课" class="headerlink" title="代码坏味道第一课"></a>代码坏味道第一课</h3><p>翻源码时我发现的几类典型问题：</p>
+<ul>
+<li><strong>注释坟场</strong>：大段注释掉的旧逻辑还挂在主干上。Git 才是历史记录该待的地方。</li>
+<li><strong><code>print()</code> 调试残留</strong>：日志不该靠 print，该用结构化日志（logger）。</li>
+<li><strong>裸 <code>except: pass</code></strong>：吞掉异常等于埋地雷，炸了都不知道。</li>
+<li><strong>重复逻辑</strong>：提取 JSON 的逻辑在两个文件里各写一遍。抽公共函数！</li>
+</ul>
+<hr>
+<h2 id="实验二：面向接口编程-vs-裸数据结构"><a href="#实验二：面向接口编程-vs-裸数据结构" class="headerlink" title="实验二：面向接口编程 vs 裸数据结构"></a>实验二：面向接口编程 vs 裸数据结构</h2><h3 id="新增一个-Model-Provider，不改一行主逻辑"><a href="#新增一个-Model-Provider，不改一行主逻辑" class="headerlink" title="新增一个 Model Provider，不改一行主逻辑"></a>新增一个 Model Provider，不改一行主逻辑</h3><p>实验要求新增一个大模型服务商。我选了 DeepSeek。</p>
+<p>关键是——我只写了一个新文件 <code>deepseek_provider.py</code>，继承 <code>ModelProvider</code> 抽象基类，实现 <code>chat_completion</code>、<code>text_completion</code>、<code>embedding</code> 三个契约方法。</p>
+<p>主流程代码一行没改。Provider 管理器自动扫描加载。重启服务就能用。</p>
+<p>这就是<strong>开闭原则</strong>：对扩展开放，对修改关闭。</p>
+<p>如果每加一个 Provider 都要去主流程里加 <code>if-else</code>，说明架构违反了 OCP。</p>
+<h3 id="SessionContext：给裸数据穿上防弹衣"><a href="#SessionContext：给裸数据穿上防弹衣" class="headerlink" title="SessionContext：给裸数据穿上防弹衣"></a>SessionContext：给裸数据穿上防弹衣</h3><p>聊天链路里，<code>final_messages</code> 是一个普通的 <code>List[Dict]</code>，在七八个步骤之间穿梭。任何一个环节手滑 <code>append</code> 或改键，下游就炸。</p>
+<p>这就像把现金塞在透明塑料袋里满街跑——太危险了。</p>
+<p>我设计了 <code>SessionContext</code> 作为 ADT：</p>
+<ul>
+<li><strong>AF（抽象函数）</strong>：表示一次对话的消息上下文</li>
+<li><strong>RI（表示不变量）</strong>：每条消息必须有 <code>role</code> 和 <code>content</code>，role 只能取 system&#x2F;user&#x2F;assistant，总数不超过 50</li>
+<li><strong>防御性编程</strong>：<ul>
+<li>写入时深拷贝 + 校验</li>
+<li>导出时返回深拷贝（外部修改不污染内部）</li>
+<li>每次状态变更后自动 <code>_check_rep()</code></li>
+</ul>
+</li>
+</ul>
+<p>然后写”破坏性测试”证明：传非法 role → 抛异常；拿到 <code>to_list()</code> 返回值后修改 → 内部状态不变。</p>
+<p>这是实验二给我的最大启发：数据结构不是数据 + 注释，而是数据 + 规则 + 防御。</p>
+<h3 id="踩坑记录"><a href="#踩坑记录" class="headerlink" title="踩坑记录"></a>踩坑记录</h3><p>端到端验证时碰到一堆环境问题：Swagger OAuth2 的 <code>tokenUrl</code> 配错了、路由匹配顺序导致接口被错误命中、流式&#x2F;非流式返回类型不一致导致 <code>async for</code> 炸了。</p>
+<p>这些全是”代码能跑但环境不通”的问题。教训：真实工程中，<strong>先确认主路径通不通</strong>，再开始写代码。</p>
+<hr>
+<h2 id="实验三：把上帝函数送上手术台"><a href="#实验三：把上帝函数送上手术台" class="headerlink" title="实验三：把上帝函数送上手术台"></a>实验三：把上帝函数送上手术台</h2><h3 id="先量体温，再开刀"><a href="#先量体温，再开刀" class="headerlink" title="先量体温，再开刀"></a>先量体温，再开刀</h3><p>实验三的目标函数是 <code>chat_with_agent</code>。它有八大职责：</p>
+<ol>
+<li>请求解析与访问控制</li>
+<li>文件上下文处理</li>
+<li>联网搜索</li>
+<li>知识库向量检索</li>
+<li>知识图谱检索</li>
+<li>MCP 服务调用</li>
+<li>消息装配与推理</li>
+<li>聊天历史写库</li>
+</ol>
+<p>全塞在一个路由函数里。这就是<strong>上帝函数</strong>——什么都干，什么都干不好。</p>
+<p>我先用 Radon 量化圈复杂度：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">poetry run radon cc app/api/v1/endpoints/agents.py -a -s<br></code></pre></td></tr></table></figure>
+
+<p>结果：Complexity 等级 C&#x2F;D，分数高得吓人。这成了我的重构基线。</p>
+<h3 id="砍一块，验一块，再砍下一块"><a href="#砍一块，验一块，再砍下一块" class="headerlink" title="砍一块，验一块，再砍下一块"></a>砍一块，验一块，再砍下一块</h3><p>重构原则：小步替换，持续验证。每一刀下去保证行为不变。</p>
+<p><strong>第一刀：清理垃圾</strong></p>
+<ul>
+<li>删掉未引用的 import</li>
+<li>删掉注释掉的旧版路由实现</li>
+<li>删掉死代码</li>
+<li><code>print()</code> 换成日志（或直接删）</li>
+<li><code>time.sleep()</code> 换成 <code>await asyncio.sleep()</code>（异步事件流里同步阻塞 &#x3D; 性能炸弹）</li>
+</ul>
+<p><strong>第二刀：服务下沉</strong></p>
+<p>把神函数里的四大块逻辑拆成独立服务：</p>
+<table>
+<thead>
+<tr>
+<th>服务</th>
+<th>职责</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>DocumentContextService</code></td>
+<td>按 file_ids 查库&#x2F;读 MinIO&#x2F;抽取文本&#x2F;截断</td>
+</tr>
+<tr>
+<td><code>KnowledgeRetrievalService</code></td>
+<td>embedding + 向量库召回 + 结果格式化</td>
+</tr>
+<tr>
+<td><code>GraphRetrievalService</code></td>
+<td>LLM 生成 Cypher + Neo4j 查询 + 可视化</td>
+</tr>
+<tr>
+<td><code>AgentChatService</code></td>
+<td>统一编排”构建上下文 → 增强 → 推理 → 写库”</td>
+</tr>
+</tbody></table>
+<p>主函数退化为”编排者”：鉴权 → 分流 → 调 service → 返回。</p>
+<p><strong>第三刀：策略模式统一增强通道</strong></p>
+<p>原来 web 搜索、知识库检索、图谱检索各写一段，像三个不同风格的人在同一个函数里吵架。</p>
+<p>我抽了一个统一接口 <code>BaseEnrichmentStrategy</code>，然后：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs python">active_strategies = []<br><span class="hljs-keyword">if</span> agent.enable_web_search:<br>    active_strategies.append(WebSearchStrategy(...))<br><span class="hljs-keyword">if</span> agent.knowledge_bases:<br>    active_strategies.append(KnowledgeRetrievalStrategy(...))<br><span class="hljs-keyword">if</span> agent.graphs:<br>    active_strategies.append(GraphRetrievalStrategy(...))<br><br><span class="hljs-keyword">for</span> strategy <span class="hljs-keyword">in</span> active_strategies:<br>    <span class="hljs-keyword">async</span> <span class="hljs-keyword">for</span> event <span class="hljs-keyword">in</span> strategy.execute(...):<br>        <span class="hljs-keyword">yield</span> event<br></code></pre></td></tr></table></figure>
+
+<p>新增一条增强通道？写一个新策略类，加到列表里。主流程不碰。</p>
+<h3 id="手术效果"><a href="#手术效果" class="headerlink" title="手术效果"></a>手术效果</h3><p>重构后再跑 Radon：</p>
+<ul>
+<li><code>chat_with_agent</code>：Complexity 等级 <strong>A</strong>，分数从巨高降到 <strong>3</strong></li>
+<li>全文件平均复杂度：<strong>A（2.86）</strong></li>
+<li>全量测试：<strong>578 passed</strong></li>
+</ul>
+<p>从”谁都不敢碰”到”谁都能看懂”。</p>
+<hr>
+<h2 id="AI-辅助编程：我的使用原则"><a href="#AI-辅助编程：我的使用原则" class="headerlink" title="AI 辅助编程：我的使用原则"></a>AI 辅助编程：我的使用原则</h2><p>三个实验全程用了 AI，但有一条铁律：</p>
+<blockquote>
+<p><strong>理解在前，生成在后。</strong></p>
+</blockquote>
+<p>先用自己脑子读懂代码——输入输出是什么、异常约定是什么、外部依赖有哪些。再把代码丢给 AI 生成草稿。最后人工校验：断言合理吗？分支覆盖全吗？引入了不稳定依赖吗？</p>
+<p>AI 是加速器，不是替代品。你不理解代码，AI 写错了你也看不出来。</p>
+<hr>
+<h2 id="三个实验，三层递进"><a href="#三个实验，三层递进" class="headerlink" title="三个实验，三层递进"></a>三个实验，三层递进</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">实验一：让项目能跑 + 有测试 + 环境可复现<br>   ↓<br>实验二：让扩展容易 + 让数据安全<br>   ↓<br>实验三：让结构清晰 + 让复杂度可控<br></code></pre></td></tr></table></figure>
+
+<p>这恰好是一个真实软件工程项目的进化轨迹：</p>
+<ol>
+<li><strong>质量兜底</strong>（测试 + 覆盖率）</li>
+<li><strong>抽象分层</strong>（OOP + ADT + 契约）</li>
+<li><strong>结构优化</strong>（重构 + 设计模式 + 复杂度度量）</li>
+</ol>
+<hr>
+<h2 id="十条经验"><a href="#十条经验" class="headerlink" title="十条经验"></a>十条经验</h2><ol>
+<li><strong>让项目先跑起来</strong>。读 README、搭环境、跑通主路径——这是接手任何项目的第零步。</li>
+<li><strong>用 Poetry 管依赖</strong>。别再用裸 <code>requirements.txt</code> 自虐了。</li>
+<li><strong>测试不是负担，是安全网</strong>。写得好的测试让你改代码时有底气。</li>
+<li><strong>覆盖率 100% ≠ 测试好</strong>。覆盖关键分支和错误路径才有意义。</li>
+<li><strong>不可测试的代码 &#x3D; 设计有问题的代码</strong>。为了可测试性重构，往往能发现更好的结构。</li>
+<li><strong>封装不是把数据塞进类里</strong>。AF + RI + 防御性编程才是真正的抽象。</li>
+<li><strong>开闭原则不是背概念</strong>。新增一个 Provider 不改主流程一行代码——这就是活生生的 OCP。</li>
+<li><strong>先量化再重构</strong>。Radon 跑一下，记下基线，改完再跑——重构收益可度量。</li>
+<li><strong>小步改，持续验</strong>。砍一块就跑测试，比一次爆改全炸了强一万倍。</li>
+<li><strong>AI 是你的副驾驶</strong>。但你得先会开车。</li>
+</ol>
+<hr>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>这三个实验不是”写代码”，是”修代码”。</p>
+<p>拿到一个浑身毛病的项目，一步步让它变得干净、可测、可扩展——这个过程比从零写新项目难得多，也学到多得多。</p>
+<p>软件构造的本质，不是让代码跑起来，是让代码能被人维护下去。</p>
+
+        </article>
+        <section class="post-near">
+            <ul>
+                
+                    <li>上一篇: 看完啦 (つд⊂)</li>
+                
+                
+                    <li>下一篇: <a href="/2026/02/26/hello-world/">Hello World</a></li>
+                
+            </ul>
+        </section>
+        
+            <section class="post-tags">
+            <a class="-none-link" href="/tags/%E8%BD%AF%E4%BB%B6%E6%9E%84%E9%80%A0/" rel="tag">软件构造</a>
+            </section>
+        
+    
+        <section class="post-author">
+        
+            <figure class="author-avatar">
+                <img src="https://github.com/MortusCc.png" alt="MortusCc" />
+            </figure>
+        
+            <div class="author-info">
+                <h4>MortusCc</h4>
+                <p>这里是 MortusCc 的个人博客。欢迎来到我的小站！这里记录了我的学习笔记、生活感悟和一些有趣的技术分享。</p>
+            </div>
+        </section>
+    
+    </div>
+</main>
+
+    <footer>
+    <div class="buttons">
+        <button class="to-top" href="#"></button>
+    </div>
+    <div class="wrap min">
+        <section class="widget">
+            <div class="row">
+                <div class="col-m-4">
+                    <h3 class="title-recent">最新文章：</h3>
+                    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2026/05/12/%E4%B8%89%E4%B8%AA%E5%AE%9E%E9%AA%8C%EF%BC%8C%E4%B8%89%E6%AE%B5%E8%BF%9B%E5%8C%96%EF%BC%9A%E4%BB%8E%E8%A3%B8%E5%A5%94%E4%BB%A3%E7%A0%81%E5%88%B0%E8%BD%AF%E4%BB%B6%E6%9E%84%E9%80%A0%E7%9A%84%E5%B7%A5%E7%A8%8B%E5%8C%96%E6%80%9D%E7%BB%B4/">三个实验，三段进化：从裸奔代码到软件构造的工程化思维</a></li><li class="post-list-item"><a class="post-list-link" href="/2026/02/26/hello-world/">Hello World</a></li></ul>
+                </div>
+                <div class="col-m-4">
+                    <h3 class="title-date">时光机：</h3>
+                    <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/05/">May 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/02/">February 2026</a></li></ul>
+                </div>
+                <div class="col-m-4">
+                    <h3 class="title-tags">标签云：</h3>
+                    <a href="/tags/%E8%BD%AF%E4%BB%B6%E6%9E%84%E9%80%A0/" style="font-size: 10px;">软件构造</a>
+                </div>
+            </div>
+        </section>
+        <section class="sub-footer">
+            <p>© 2026 <a href="/">MortusCc</a>. All Rights Reserved. Theme Based On <a href="https://github.com/Dreamer-Paul/Hingle" target="_blank" rel="nofollow">Hingle</a>.</p>
+        </section>
+    </div>
+</footer>
+
+
+<script src="/static/kico.js"></script>
+<script src="/static/hingle.js"></script>
+
+
+<script>var hingle = new Paul_Hingle({"copyright":false,"night":true});</script>
+
+  </body>
+</html>
